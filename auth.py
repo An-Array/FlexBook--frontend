@@ -55,7 +55,7 @@ def login():
 def admin_panel():
     st.subheader("🛠️ Admin Panel - Assign Role")
     user_id = st.number_input("User ID", min_value=1, step=1)
-    role = st.selectbox("Select Role", ["USER", "OWNER", "ADMIN"])
+    role = st.selectbox("Select Role", ["user", "owner", "admin"])
     panel_key = st.text_input("Admin Panel Key", type="password")
     if st.button("Update Role"):
         payload = {"user_id": user_id, "role": role, "panel_key": panel_key}
