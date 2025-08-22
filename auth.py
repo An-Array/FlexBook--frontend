@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from dotenv import BACKEND_URL
+from config import BACKEND_URL
 
 BASE_URL = BACKEND_URL  # adjust if needed
 
