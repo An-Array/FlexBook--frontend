@@ -1,15 +1,12 @@
 import streamlit as st
-import requests
-from config import BACKEND_URL
+import requests, jwt
+from config import BACKEND_URL, get_auth_headers
 
 BASE_URL = BACKEND_URL  # adjust if needed
 
 # ✅ Helper function for headers
-def get_auth_headers():
-    if "token" not in st.session_state:
-        st.error("‼️ Please login first.")
-        return None
-    return {"Authorization": f"Bearer {st.session_state['token']}"}
+def auth_check():
+    get_auth_headers()
 
 
 # ✅ Signup
@@ -44,6 +41,12 @@ def login():
                 token = response.json()["access_token"]
                 st.session_state["token"] = token
                 st.success("✅ Login successful!")
+                payload = jwt.decode(token, options={"verify_signature": False})
+                user_id = payload.get("user_id")
+                role = payload.get("role")
+                st.session_state['user_id'] = user_id
+                st.session_state['role'] = role
+                st.text(f"User ID: {user_id}")
             else:
                 st.error(f"⚠️ {response.json().get('detail')}")
         except Exception as e:

@@ -1,26 +1,23 @@
 import streamlit as st
 import requests
-from config import BACKEND_URL
+from config import BACKEND_URL, get_auth_headers
 
 BASE_URL = BACKEND_URL   # change if deployed
 
 # ✅ Helper function to get auth headers
-def get_auth_headers():
-    if "token" not in st.session_state:
-        st.error("‼️ Please login first.")
-        return None
-    return {"Authorization": f"Bearer {st.session_state['token']}"}
+def auth_check():
+    get_auth_headers()
 
 
 # ✅ Show all venues
 def show_all_venues():
+    st.subheader("🏢 All Venues")
     headers = get_auth_headers()
     if not headers: return
     try:
         response = requests.get(f"{BASE_URL}/venues", headers=headers)
         if response.status_code == 200:
             venues = response.json()
-            st.subheader("🏢 All Venues")
             for v in venues:
                 st.markdown(f"- **ID:** {v['id']} | **Name:** {v['name']} | **Owner ID:** {v['owner_id']}")
         else:
@@ -31,6 +28,7 @@ def show_all_venues():
 
 # ✅ Show single venue by ID
 def show_venue_by_id():
+    st.subheader("🔍 Get Venue by ID")
     headers = get_auth_headers()
     if not headers: return
     venue_id = st.number_input("Enter Venue ID", min_value=1, step=1)
@@ -55,6 +53,7 @@ def show_venue_by_id():
 
 # ✅ Add new venue
 def add_venue():
+    st.subheader("🏨 Add Venue")
     headers = get_auth_headers()
     if not headers: return
     name = st.text_input("Venue Name")
@@ -72,6 +71,7 @@ def add_venue():
 
 # ✅ Update venue
 def update_venue():
+    st.subheader("✏️ Update Venue")
     headers = get_auth_headers()
     if not headers: return
     venue_id = st.number_input("Venue ID to Update", min_value=1, step=1)
@@ -90,6 +90,7 @@ def update_venue():
 
 # ✅ Delete venue
 def delete_venue():
+    st.subheader("❌ Delete Venue")
     headers = get_auth_headers()
     if not headers: return
     venue_id = st.number_input("Venue ID to Delete", min_value=1, step=1)

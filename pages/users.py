@@ -1,15 +1,13 @@
 import streamlit as st
 import requests
-from config import BACKEND_URL
+from config import BACKEND_URL, get_auth_headers
 
 BASE_URL = BACKEND_URL # adjust if needed
 
 # ✅ Helper function for headers
-def get_auth_headers():
-    if "token" not in st.session_state:
-        st.error("‼️ Please login first.")
-        return None
-    return {"Authorization": f"Bearer {st.session_state['token']}"}
+def auth_check():
+    get_auth_headers()
+
 
 # ✅ Get All Users (Admin only)
 def get_all_users():

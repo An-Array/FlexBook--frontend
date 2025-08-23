@@ -1,18 +1,14 @@
 import streamlit as st
 import requests
 from datetime import datetime
-from config import BACKEND_URL
+from config import BACKEND_URL, get_auth_headers
 
 BASE_URL = f"{BACKEND_URL}/bookings"  # adjust if needed
 
 
 # ✅ Helper function for headers
-def get_auth_headers():
-    if "token" not in st.session_state:
-        st.error("‼️ Please login first.")
-        return None
-    return {"Authorization": f"Bearer {st.session_state['token']}"}
-
+def auth_check():
+    get_auth_headers()
 
 # ✅ Create booking
 def create_booking():
